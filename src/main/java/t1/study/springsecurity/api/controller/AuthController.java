@@ -24,7 +24,7 @@ public class AuthController implements AuthApi {
     @Override
     public ResponseEntity<JwtResponse> signIn(@RequestBody LogInRequest request) {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(authService.signIn(request));
+                .body(authService.LogIn(request));
     }
 
     @Override

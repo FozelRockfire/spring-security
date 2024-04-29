@@ -36,7 +36,7 @@ public class AuthService {
                 .build();
     }
 
-    public JwtResponse signIn(LogInRequest request) {
+    public JwtResponse LogIn(LogInRequest request) {
         User user = userService.findOptionalByUsername(request.username())
                 .orElseThrow(() -> new IllegalArgumentException("Неверное имя пользователя или пароль"));
 
