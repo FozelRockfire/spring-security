@@ -3,15 +3,13 @@ package t1.study.springsecurity.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Service;
 import t1.study.springsecurity.dto.JwtRefreshRequest;
 import t1.study.springsecurity.dto.JwtResponse;
 import t1.study.springsecurity.dto.LogInRequest;
 import t1.study.springsecurity.dto.UserDTO;
-import t1.study.springsecurity.exception.AlreadyExistException;
-import t1.study.springsecurity.exception.NotFoundException;
-import t1.study.springsecurity.exception.NotRegisteredException;
-import t1.study.springsecurity.exception.TokenValidationException;
+import t1.study.springsecurity.exception.*;
 import t1.study.springsecurity.model.User;
 
 @Service
@@ -38,12 +36,16 @@ public class AuthService {
 
     public JwtResponse LogIn(LogInRequest request) {
         User user = userService.findOptionalByUsername(request.username())
-                .orElseThrow(() -> new IllegalArgumentException("Неверное имя пользователя или пароль"));
+                .orElseThrow(() -> new LogInException("Неверное имя пользователя или пароль"));
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                request.username(),
-                request.password()
-        ));
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                    request.username(),
+                    request.password()
+            ));
+        } catch (AuthenticationException e) {
+            throw new LogInException("Неверное имя пользователя или пароль");
+        }
 
         return JwtResponse.builder()
                 .accessToken(jwtService.generateToken(user))

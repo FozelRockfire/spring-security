@@ -11,11 +11,11 @@ public record UserDTO(
         String name,
 
         @Schema(description = "Электронная почта пользователя, используемая в качестве логина",
-                example = "johndoe@example.com")
+                example = "johndoe@gmail.com")
         String username,
 
         @Schema(description = "Пароль пользователя",
-                example = "password123")
+                example = "admin")
         String password
 ){
 }

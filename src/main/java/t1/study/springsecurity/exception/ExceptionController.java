@@ -1,5 +1,6 @@
 package t1.study.springsecurity.exception;
 
+import io.jsonwebtoken.security.SignatureException;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
@@ -41,8 +42,7 @@ public class ExceptionController {
             HttpMessageNotReadableException.class,
             MethodArgumentNotValidException.class,
             ConstraintViolationException.class,
-            ValidationException.class,
-            TokenValidationException.class
+            ValidationException.class
     })
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @Hidden
@@ -56,15 +56,19 @@ public class ExceptionController {
                         .build());
     }
 
-    @ExceptionHandler(value = {Exception.class})
-    @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(value = {
+            TokenValidationException.class,
+            SignatureException.class,
+            LogInException.class
+    })
+    @ResponseStatus(value = HttpStatus.FORBIDDEN)
     @Hidden
-    public ResponseEntity<ErrorMessage> unexpectedErrorException(Exception exception) {
-        log.error("unexpectedErrorException: {}", exception.getMessage());
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    public ResponseEntity<ErrorMessage> accessDeniedException(RuntimeException exception) {
+        log.error("validationException: {}", exception.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(ErrorMessage.builder()
-                        .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                        .description("Внутренняя ошибка сервера")
+                        .statusCode(HttpStatus.FORBIDDEN.value())
+                        .description(exception.getMessage())
                         .currentTime(LocalDateTime.now())
                         .build());
     }
