@@ -2,8 +2,8 @@ FROM openjdk:17
 
 WORKDIR /opt/app
 
-COPY ./target/spring-security-0.0.1-SNAPSHOT.jar .
+COPY ./target/*.jar app.jar
 
 EXPOSE 8081
 
-CMD [ "java", "-jar", "/opt/app/spring-security-0.0.1-SNAPSHOT.jar" ]
+CMD [ "java", "-jar", "-Dspring.profiles.active=docker", "/opt/app/app.jar" ]
