@@ -33,7 +33,7 @@ public interface AuthApi {
                             schema = @Schema(implementation = ErrorMessage.class)))
     })
     @PostMapping("register")
-    ResponseEntity<JwtResponse> signUp(@RequestBody UserDTO request);
+    ResponseEntity<Void> signUp(@RequestBody UserDTO request);
 
     @Operation(summary = "Вход существующего пользователя")
     @ApiResponses(value = {
@@ -48,7 +48,7 @@ public interface AuthApi {
                             schema = @Schema(implementation = ErrorMessage.class)))
     })
     @PostMapping("login")
-    ResponseEntity<JwtResponse> signIn(@RequestBody LogInRequest request);
+    ResponseEntity<Void> signIn(@RequestBody LogInRequest request);
 
     @Operation(summary = "Обновление токена доступа")
     @ApiResponses(value = {
@@ -63,5 +63,5 @@ public interface AuthApi {
                             schema = @Schema(implementation = ErrorMessage.class)))
     })
     @PostMapping("refresh")
-    ResponseEntity<JwtResponse> refresh(@RequestBody JwtRefreshRequest request);
+    ResponseEntity<Void> refresh(@RequestBody JwtRefreshRequest request);
 }

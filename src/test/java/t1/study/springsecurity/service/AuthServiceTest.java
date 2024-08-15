@@ -13,6 +13,7 @@ import t1.study.springsecurity.dto.JwtResponse;
 import t1.study.springsecurity.dto.LogInRequest;
 import t1.study.springsecurity.dto.UserDTO;
 import t1.study.springsecurity.exception.AlreadyExistException;
+import t1.study.springsecurity.exception.LogInException;
 import t1.study.springsecurity.exception.NotRegisteredException;
 import t1.study.springsecurity.exception.TokenValidationException;
 import t1.study.springsecurity.model.RoleType;
@@ -132,7 +133,7 @@ class AuthServiceTest {
         when(userService.findOptionalByUsername("User@mail.com")).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(IllegalArgumentException.class, () -> authService.LogIn(logInRequest));
+        assertThrows(LogInException.class, () -> authService.LogIn(logInRequest));
     }
 
     @Test
